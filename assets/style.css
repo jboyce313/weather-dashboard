@@ -15,11 +15,16 @@ button {
   background-color: gray;
   border: none;
   border-radius: 5px;
+  padding: 5px 0 5px 0;
 }
 
 #search-btn {
   background-color: rgb(116, 116, 245);
   color: white;
+}
+
+#search-box {
+  width: 200px;
 }
 
 h1 {
