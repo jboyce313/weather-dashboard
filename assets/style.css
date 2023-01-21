@@ -52,5 +52,12 @@ h1 {
 }
 
 .today {
-  border: 2px solid black;
+  /* border: 1px solid black; */
+  margin: 20px 0 0 20px;
+  padding: 10px;
+  width: 900px;
+}
+
+.today * {
+  margin-top: 10px;
 }
