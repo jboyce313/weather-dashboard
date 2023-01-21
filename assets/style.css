@@ -51,13 +51,30 @@ h1 {
   height: 2px;
 }
 
+.display {
+  margin: 20px 0 0 20px;
+}
+
 .today {
   /* border: 1px solid black; */
-  margin: 20px 0 0 20px;
-  padding: 10px;
-  width: 900px;
+  /* margin: 20px 0 0 20px; */
+  /* padding: 10px;
+  width: 900px; */
 }
 
 .today * {
   margin-top: 10px;
+}
+
+.five-day {
+  margin-top: 10px;
+  display: flex;
+}
+
+.day {
+  margin-right: 40px;
+}
+
+.day * {
+  margin: 5px;
 }

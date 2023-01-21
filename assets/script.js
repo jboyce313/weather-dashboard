@@ -2,6 +2,7 @@ var searchBox = $("#search-box");
 var searchBtn = $("#search-btn");
 var searchDisplay = $(".search");
 var currentWeatherDisplay = $(".today");
+var fiveDayDisplay = $(".five-day");
 
 searchBtn.on("click", function () {
   if (!searchBox.val()) {
@@ -24,6 +25,7 @@ searchBtn.on("click", function () {
     .then((data) => {
       if (good) {
         displayCurrentWeather(data);
+        displayFiveDay(data.list);
       }
     })
     .then(() => {
@@ -47,19 +49,15 @@ function displayCurrentWeather(data) {
   cityName.text(data.city.name + " " + getDate(currentWeather));
   currentWeatherDisplay.append(cityName);
 
-  var currentTempKelvin = currentWeather.main.temp;
-  var currentTempFahrenheit = convertTempToFahrenheit(currentTempKelvin);
-  var currentTemp = $("<p>");
-  currentTemp.text(`Temp: ${currentTempFahrenheit.toFixed(2)}°F`);
-  currentWeatherDisplay.append(currentTemp);
+  currentWeatherDisplay.append(displayTemp(currentWeather));
 
-  var currentWind = $("<p>");
-  currentWind.text(`Wind: ${currentWeather.wind.speed} MPH`);
-  currentWeatherDisplay.append(currentWind);
+  currentWeatherDisplay.append(displayWind(currentWeather));
 
-  var currentHumidity = $("<p>");
-  currentHumidity.text(`Humidity: ${currentWeather.main.humidity}%`);
-  currentWeatherDisplay.append(currentHumidity);
+  // var currentHumidity = $("<p>");
+  // currentHumidity.text(`Humidity: ${currentWeather.main.humidity}%`);
+  currentWeatherDisplay.append(displayHumidity(currentWeather));
+
+  currentWeatherDisplay.append($("<h3>5-Day Forecast<h3>"));
 }
 
 function convertTempToFahrenheit(tempKelvin) {
@@ -73,4 +71,54 @@ function getDate(current) {
   var month = dateInfo[1];
   var day = dateInfo[2];
   return `${month}/${day}/${year}`;
+}
+
+function displayFiveDay(dataList) {
+  console.log(dataList);
+  // fiveDayDisplay.append($("<h3>5-Day Forecast<h3>"));
+  var nextFiveDays = [
+    dataList[4],
+    dataList[12],
+    dataList[20],
+    dataList[28],
+    dataList[36],
+  ];
+
+  for (var i = 0; i < nextFiveDays.length; i++) {
+    var dayEl = $("<div>");
+    dayEl.attr("class", "day");
+    dayEl.css("background-color", "rgb(24, 24, 131)");
+    dayEl.css("color", "white");
+    fiveDayDisplay.append(dayEl);
+
+    var curr = nextFiveDays[i];
+
+    var dateEl = $("<h4>");
+    dateEl.text(getDate(curr));
+    dayEl.append(dateEl);
+
+    dateEl.append(displayTemp(curr));
+    dateEl.append(displayWind(curr));
+    dateEl.append(displayHumidity(curr));
+  }
+}
+
+function displayTemp(dayInfo) {
+  var currentTempKelvin = dayInfo.main.temp;
+  var currentTempFahrenheit = convertTempToFahrenheit(currentTempKelvin);
+  var tempEl = $("<p>");
+  tempEl.text(`Temp: ${currentTempFahrenheit.toFixed(2)}°F`);
+  return tempEl;
+}
+
+function displayWind(dayInfo) {
+  var windEl = $("<p>");
+  windEl.text(`Wind: ${dayInfo.wind.speed} MPH`);
+  return windEl;
+}
+
+function displayHumidity(dayInfo) {
+  var humidityEl = $("<p>");
+  humidityEl.text(`Humidity: ${dayInfo.main.humidity}%`);
+  return humidityEl;
 }
