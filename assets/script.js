@@ -3,18 +3,30 @@ var searchBtn = $("#search-btn");
 var searchDisplay = $(".search");
 var currentWeatherDisplay = $(".today");
 var fiveDayDisplay = $(".five-day");
-var previousSearchBtn = $(".search");
+var forecastHeader = $(".forecast-header");
+var cards = $(".cards");
 var display = $(".display");
 
-searchBtn.on("click", function () {
-  if (!searchBox.val()) {
+const getWeather = (e, name) => {
+  if (!searchBox.val() && !name) {
     return;
   }
   currentWeatherDisplay.empty();
-  fiveDayDisplay.empty();
+  cards.empty();
+  if (!fiveDayDisplay.hasClass("hidden")) fiveDayDisplay.addClass("hidden");
+  if (!currentWeatherDisplay.hasClass("hidden"))
+    currentWeatherDisplay.addClass("hidden");
 
-  let cityName = searchBox.val();
+  let cityName;
+  if (name) {
+    cityName = name;
+  } else {
+    cityName = searchBox.val();
+  }
+  console.log(cityName);
+
   const apiKey = "5447ab7f3651e92ac93b0c23f2497452";
+
   fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`
   )
@@ -25,27 +37,34 @@ searchBtn.on("click", function () {
       return response.json();
     })
     .then((data) => {
+      fiveDayDisplay.removeClass("hidden");
+      currentWeatherDisplay.removeClass("hidden");
       displayCurrentWeather(data);
       displayFiveDay(data.list);
     })
     .then(() => {
-      var previousSearch = $("<button>");
-      previousSearch.addClass("previous-search");
-      previousSearch.text(searchBox.val());
-      searchDisplay.append(previousSearch);
+      if (!name) {
+        const previousSearch = $("<button>");
+        previousSearch.addClass("previous-search");
+        const buttonText = searchBox.val();
+        previousSearch.text(buttonText);
+        searchDisplay.append(previousSearch);
+        previousSearch.on("click", (event) => {
+          getWeather(event, buttonText);
+        });
+      }
     })
     .then(() => {
       searchBox.val("");
     });
-});
+};
 
 function displayCurrentWeather(data) {
-  console.log(data);
   var currentWeather = data.list[0];
-  console.log(currentWeather);
 
   var cityName = $("<h2>");
   cityName.text(data.city.name + " " + getDate(currentWeather));
+
   currentWeatherDisplay.append(cityName);
 
   currentWeatherDisplay.append(displayTemp(currentWeather));
@@ -54,7 +73,7 @@ function displayCurrentWeather(data) {
 
   currentWeatherDisplay.append(displayHumidity(currentWeather));
 
-  currentWeatherDisplay.append($("<h3>5-Day Forecast<h3>"));
+  // currentWeatherDisplay.append($("<h3>5-Day Forecast<h3>"));
 }
 
 function convertTempToFahrenheit(tempKelvin) {
@@ -71,7 +90,6 @@ function getDate(current) {
 }
 
 function displayFiveDay(dataList) {
-  console.log(dataList);
   // fiveDayDisplay.append($("<h3>5-Day Forecast<h3>"));
   var nextFiveDays = [
     dataList[4],
@@ -84,9 +102,7 @@ function displayFiveDay(dataList) {
   for (var i = 0; i < nextFiveDays.length; i++) {
     var dayEl = $("<div>");
     dayEl.attr("class", "day");
-    dayEl.css("background-color", "rgb(24, 24, 131)");
-    dayEl.css("color", "white");
-    fiveDayDisplay.append(dayEl);
+    cards.append(dayEl);
 
     var curr = nextFiveDays[i];
 
@@ -94,9 +110,9 @@ function displayFiveDay(dataList) {
     dateEl.text(getDate(curr));
     dayEl.append(dateEl);
 
-    dateEl.append(displayTemp(curr));
-    dateEl.append(displayWind(curr));
-    dateEl.append(displayHumidity(curr));
+    dayEl.append(displayTemp(curr));
+    dayEl.append(displayWind(curr));
+    dayEl.append(displayHumidity(curr));
   }
 }
 
@@ -120,35 +136,16 @@ function displayHumidity(dayInfo) {
   return humidityEl;
 }
 
-previousSearchBtn.on("click", function () {
-  // var cityName = event.target.textContent;
-  // var good = true;
-  // var apiKey = "5447ab7f3651e92ac93b0c23f2497452";
-  // fetch(
-  //   `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`
-  // )
-  //   .then((response) => {
-  //     if (response.status === 404) {
-  //       alert("404 error");
-  //       good = false;
-  //     }
-  //     return response.json();
-  //   })
-  //   .then((data) => {
-  //     if (good) {
-  //       displayCurrentWeather(data);
-  //       displayFiveDay(data.list);
-  //     }
-  //   })
-  //   .then(() => {
-  //     if (good) {
-  //       var previousSearch = $("<button>");
-  //       previousSearch.addClass("previousSearch");
-  //       previousSearch.text(searchBox.val());
-  //       searchDisplay.append(previousSearch);
-  //     }
-  //   })
-  //   .then(() => {
-  //     searchBox.val("");
-  //   });
-});
+const func = () => {
+  console.log("clicked");
+};
+
+// function attachListeners() {
+//   $(".previous-search:not(.event-added)").on("click", function (event) {
+//     getWeather(event, $(this).text());
+//     console.log(event, $(this).text());
+//     $(this).addClass("event-added");
+//   });
+// }
+
+searchBtn.on("click", getWeather);

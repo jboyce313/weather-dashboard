@@ -25,6 +25,7 @@ button {
 
 #search-box {
   width: 200px;
+  padding: 5px;
 }
 
 h1 {
@@ -34,6 +35,8 @@ h1 {
 
 .container {
   display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
 }
 
 .search {
@@ -43,7 +46,7 @@ h1 {
 }
 
 .search * {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .line {
@@ -52,14 +55,18 @@ h1 {
 }
 
 .display {
-  margin: 20px 0 0 20px;
+  margin: 20px 20px 0 100px;
+}
+
+.today,
+.five-day {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .today {
-  /* border: 1px solid black; */
-  /* margin: 20px 0 0 20px; */
-  /* padding: 10px;
-  width: 900px; */
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 20px;
 }
 
 .today * {
@@ -67,14 +74,43 @@ h1 {
 }
 
 .five-day {
-  margin-top: 10px;
+  margin-top: 20px;
+  border: 1px solid black;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.cards {
   display: flex;
+  flex-wrap: wrap;
+}
+
+.cards * {
+  margin-top: 20px;
 }
 
 .day {
   margin-right: 40px;
+  margin-top: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  background-color: rgb(24, 24, 131);
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .day * {
   margin: 5px;
+}
+
+.day h4 {
+  margin-bottom: 10px;
+}
+
+.forecast-header {
+  margin-bottom: 20px;
+}
+
+.hidden {
+  display: none;
 }
