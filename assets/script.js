@@ -4,38 +4,35 @@ var searchDisplay = $(".search");
 var currentWeatherDisplay = $(".today");
 var fiveDayDisplay = $(".five-day");
 var previousSearchBtn = $(".search");
+var display = $(".display");
 
 searchBtn.on("click", function () {
   if (!searchBox.val()) {
     return;
   }
+  currentWeatherDisplay.empty();
+  fiveDayDisplay.empty();
 
-  var good = true;
-  var cityName = searchBox.val();
-  var apiKey = "5447ab7f3651e92ac93b0c23f2497452";
+  let cityName = searchBox.val();
+  const apiKey = "5447ab7f3651e92ac93b0c23f2497452";
   fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`
   )
     .then((response) => {
       if (response.status === 404) {
-        alert("404 error");
-        good = false;
+        alert("City not found!");
       }
       return response.json();
     })
     .then((data) => {
-      if (good) {
-        displayCurrentWeather(data);
-        displayFiveDay(data.list);
-      }
+      displayCurrentWeather(data);
+      displayFiveDay(data.list);
     })
     .then(() => {
-      if (good) {
-        var previousSearch = $("<button>");
-        previousSearch.addClass("previous-search");
-        previousSearch.text(searchBox.val());
-        searchDisplay.append(previousSearch);
-      }
+      var previousSearch = $("<button>");
+      previousSearch.addClass("previous-search");
+      previousSearch.text(searchBox.val());
+      searchDisplay.append(previousSearch);
     })
     .then(() => {
       searchBox.val("");
@@ -55,8 +52,6 @@ function displayCurrentWeather(data) {
 
   currentWeatherDisplay.append(displayWind(currentWeather));
 
-  // var currentHumidity = $("<p>");
-  // currentHumidity.text(`Humidity: ${currentWeather.main.humidity}%`);
   currentWeatherDisplay.append(displayHumidity(currentWeather));
 
   currentWeatherDisplay.append($("<h3>5-Day Forecast<h3>"));
