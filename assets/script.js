@@ -91,7 +91,6 @@ function getDate(current) {
 }
 
 function displayFiveDay(dataList) {
-  // fiveDayDisplay.append($("<h3>5-Day Forecast<h3>"));
   var nextFiveDays = [
     dataList[4],
     dataList[12],
@@ -140,13 +139,5 @@ function displayHumidity(dayInfo) {
 const func = () => {
   console.log("clicked");
 };
-
-// function attachListeners() {
-//   $(".previous-search:not(.event-added)").on("click", function (event) {
-//     getWeather(event, $(this).text());
-//     console.log(event, $(this).text());
-//     $(this).addClass("event-added");
-//   });
-// }
 
 searchBtn.on("click", getWeather);
