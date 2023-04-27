@@ -3,6 +3,7 @@ var searchBtn = $("#search-btn");
 var searchDisplay = $(".search");
 var currentWeatherDisplay = $(".today");
 var fiveDayDisplay = $(".five-day");
+var previousSearchBtn = $(".search");
 
 searchBtn.on("click", function () {
   if (!searchBox.val()) {
@@ -31,6 +32,7 @@ searchBtn.on("click", function () {
     .then(() => {
       if (good) {
         var previousSearch = $("<button>");
+        previousSearch.addClass("previous-search");
         previousSearch.text(searchBox.val());
         searchDisplay.append(previousSearch);
       }
@@ -122,3 +124,36 @@ function displayHumidity(dayInfo) {
   humidityEl.text(`Humidity: ${dayInfo.main.humidity}%`);
   return humidityEl;
 }
+
+previousSearchBtn.on("click", function () {
+  // var cityName = event.target.textContent;
+  // var good = true;
+  // var apiKey = "5447ab7f3651e92ac93b0c23f2497452";
+  // fetch(
+  //   `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`
+  // )
+  //   .then((response) => {
+  //     if (response.status === 404) {
+  //       alert("404 error");
+  //       good = false;
+  //     }
+  //     return response.json();
+  //   })
+  //   .then((data) => {
+  //     if (good) {
+  //       displayCurrentWeather(data);
+  //       displayFiveDay(data.list);
+  //     }
+  //   })
+  //   .then(() => {
+  //     if (good) {
+  //       var previousSearch = $("<button>");
+  //       previousSearch.addClass("previousSearch");
+  //       previousSearch.text(searchBox.val());
+  //       searchDisplay.append(previousSearch);
+  //     }
+  //   })
+  //   .then(() => {
+  //     searchBox.val("");
+  //   });
+});
