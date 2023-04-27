@@ -63,6 +63,7 @@ function displayCurrentWeather(data) {
   var currentWeather = data.list[0];
 
   var cityName = $("<h2>");
+  cityName.addClass("current-city");
   cityName.text(data.city.name + " " + getDate(currentWeather));
 
   currentWeatherDisplay.append(cityName);
